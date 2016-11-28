@@ -29,8 +29,7 @@ import android.content.Intent;
 @Kroll.module(name = "Flic", id = "ti.flic")
 public class FlicModule extends KrollModule implements TiActivityResultHandler {
 
-	// Standard Debugging variables
-	private static final String LCAT = "FlicModule";
+	private static final String LCAT = "FickModule";
 	private Context ctx;
 	static String appId;
 	static String appSecret;
@@ -89,15 +88,16 @@ public class FlicModule extends KrollModule implements TiActivityResultHandler {
 			public void onInitialized(FlicManager manager) {
 				FlicButton button = manager.completeGrabButton(requestCode,
 						resultCode, data);
+				KrollDict event = new KrollDict();
 				if (button != null) {
 					button.registerListenForBroadcast(FlicBroadcastReceiverFlags.UP_OR_DOWN
 							| FlicBroadcastReceiverFlags.REMOVED);
-					// Toast.makeText(MainActivity.this, "Grabbed a button",
-					// Toast.LENGTH_SHORT).show();
+
+					event.put("message", "Grabbed a button");
 				} else {
-					// Toast.makeText(MainActivity.this,
-					// "Did not grab any button", Toast.LENGTH_SHORT).show();
+					event.put("message", "Did not grab any button");
 				}
+				TiApplication.getInstance().fireAppEvent("flic", event);
 			}
 		});
 	}
