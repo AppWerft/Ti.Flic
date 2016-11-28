@@ -10,9 +10,9 @@ The first thing we need to do is to make sure you have the Flic app installed.
 
 For usage inside a Titanium app you have to insert 3 paramters in your tiapp.xml:
 ```xml
-<property name="appId" type="string"></property>
-<property name="appSecret" type="string"></property>
-<property name="appName" type="string"></property>
+<property name="FLIC_ID" type="String"></property>
+<property name="FLIC_SECRET" type="String"></property>
+<property name="FLIC_NAME" type="String"></property>
 ```
 The appId and appSecret are unique for every application and can be generated on [developer portal of flic](https://partners.flic.io/partners/developers/credentials).
 The appName should be the friendly name of your app. 

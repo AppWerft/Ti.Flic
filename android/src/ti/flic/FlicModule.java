@@ -18,6 +18,7 @@ import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.titanium.TiApplication;
+import org.appcelerator.titanium.TiProperties;
 import org.appcelerator.titanium.util.TiActivityResultHandler;
 import org.appcelerator.kroll.common.Log;
 
@@ -31,9 +32,9 @@ public class FlicModule extends KrollModule implements TiActivityResultHandler {
 	// Standard Debugging variables
 	private static final String LCAT = "FlicModule";
 	private Context ctx;
-	private String appId;
-	private String appSecret;
-	private String appName;
+	static String appId;
+	static String appSecret;
+	static String appName;
 
 	public FlicModule() {
 		super();
@@ -42,34 +43,44 @@ public class FlicModule extends KrollModule implements TiActivityResultHandler {
 
 	@Kroll.onAppCreate
 	public static void onAppCreate(TiApplication app) {
-		Log.d(LCAT, "inside onAppCreate");
-		// put module init code that needs to run when the application is
-		// created
+		TiProperties appProperties = TiApplication.getInstance()
+				.getAppProperties();
+		appId = appProperties.getString("FLIC_ID", "");
+		appSecret = appProperties.getString("FLIC_SECRET", "");
+		appName = appProperties.getString("FLIC_NAME", "");
+		FlicManager.setAppCredentials(appId, appSecret, appName);
 	}
 
 	@Kroll.method
-	public void Init(KrollDict opts) {
-		if (opts.containsKeyAndNotNull("appId")) {
-			appId = opts.getString("appId");
-		}
-		if (opts.containsKeyAndNotNull("appSecret")) {
-			appId = opts.getString("appSecret");
-		}
-		if (opts.containsKeyAndNotNull("appName")) {
-			appId = opts.getString("appName");
-		}
-		FlicManager.setAppCredentials(appId, appSecret, appName);
+	public void Init() {
+		/*
+		 * We will now use the manager that can be used to grab a button from
+		 * the Flic app. The Flic app will be opened up, and the user will be
+		 * prompted to select one of his/her connected buttons. It will then
+		 * send information about the button back to our app so that we can
+		 * start using it. In an activity, this code is used to grab a button.
+		 */
 		try {
 			FlicManager.getInstance(ctx, new FlicManagerInitializedCallback() {
+
 				@Override
 				public void onInitialized(FlicManager manager) {
+					manager.initiateGrabButton(TiApplication
+							.getAppRootOrCurrentActivity());
 				}
+
 			});
 		} catch (FlicAppNotInstalledException err) {
 			Log.e(LCAT, "Flic App is not installed");
 		}
 	}
 
+	/*
+	 * To receive the button object, we must feed the result into the manager
+	 * which then returns the button object. With the button object, we register
+	 * for notifications. In this example, we’re only interested in down, up and
+	 * remove events.
+	 */
 	@Override
 	public void onResult(Activity activity, final int requestCode,
 			final int resultCode, final Intent data) {

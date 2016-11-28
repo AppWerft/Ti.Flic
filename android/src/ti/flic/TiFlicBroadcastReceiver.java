@@ -3,11 +3,14 @@ package ti.flic;
 import android.content.Context;
 import io.flic.lib.FlicBroadcastReceiver;
 import io.flic.lib.FlicButton;
+import io.flic.lib.FlicManager;
 
 public class TiFlicBroadcastReceiver extends FlicBroadcastReceiver {
 	@Override
 	protected void onRequestAppCredentials(Context context) {
-		// Set app credentials by calling FlicManager.setAppCredentials here
+		FlicManager.setAppCredentials(FlicModule.appId, FlicModule.appSecret,
+				FlicModule.appName);
+
 	}
 
 	@Override
