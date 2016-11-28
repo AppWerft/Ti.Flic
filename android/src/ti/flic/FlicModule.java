@@ -58,6 +58,7 @@ public class FlicModule extends KrollModule implements TiActivityResultHandler {
 		if (opts.containsKeyAndNotNull("appName")) {
 			appId = opts.getString("appName");
 		}
+		FlicManager.setAppCredentials(appId, appSecret, appName);
 		try {
 			FlicManager.getInstance(ctx, new FlicManagerInitializedCallback() {
 				@Override
