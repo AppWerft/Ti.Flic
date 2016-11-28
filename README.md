@@ -1,5 +1,5 @@
 #Ti.Flic
-
+<img src="https://cdn.shopify.com/s/files/1/1089/5800/products/flic-teal-grey.jpg?v=1475748747" width=200 />
 This is the Titanium module for flic. It is still in working progress.
 The first thing we need to do is to make sure you have the Flic app installed. 
  Why do I need the Flic app? The fliclib works with the Flic app so that you don't have to worry about handling the Flics, scanning the Flics, or monitoring the communication with them. All of that is taken care of by the Flic app.
