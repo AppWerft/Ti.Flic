@@ -42,12 +42,7 @@ public class FlicModule extends KrollModule implements TiActivityResultHandler {
 
 	@Kroll.onAppCreate
 	public static void onAppCreate(TiApplication app) {
-		TiProperties appProperties = TiApplication.getInstance()
-				.getAppProperties();
-		appId = appProperties.getString("FLIC_ID", "");
-		appSecret = appProperties.getString("FLIC_SECRET", "");
-		appName = appProperties.getString("FLIC_NAME", "");
-		FlicManager.setAppCredentials(appId, appSecret, appName);
+		Config.setFlicCredentials();
 	}
 
 	@Kroll.method

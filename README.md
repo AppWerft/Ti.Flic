@@ -1,14 +1,16 @@
 #Ti.Flic
-<img src="https://cdn.shopify.com/s/files/1/1089/5800/products/flic-teal-grey.jpg?v=1475748747" width=200 />
-This is the Titanium module for flic. It is still in working progress.
+<img src="https://cdn.shopify.com/s/files/1/1089/5800/products/flic-teal-grey.jpg?v=1475748747" width=240 />
+
+This is the Titanium module for flic buttons. It is still in working progress. Hint: send me a button and then I can test and complete the module. ;-)
+
 The first thing we need to do is to make sure you have the Flic app installed. 
- Why do I need the Flic app? The fliclib works with the Flic app so that you don't have to worry about handling the Flics, scanning the Flics, or monitoring the communication with them. All of that is taken care of by the Flic app.
+Why do I need the Flic app? The fliclib works with the Flic app so that you don't have to worry about handling the Flics, scanning the Flics, or monitoring the communication with them. All of that is taken care of by the Flic app.
 
-1.    Download and install the Flic app. It's free and you can find it in the Google Play Store.
-2.    Connect all your Flics to the app.
-3.    That's it! Now you will be able to use the Flic Grabber and get access to the Flics inside your own app. Don't worry, we'll go through how this is done soon.
+1.  Download and install the Flic app. It's free and you can find it in the Google Play Store.
+2.  Connect all your Flics to the app.
+3.   That's it! Now you will be able to use the Flic Grabber and get access to the Flics inside your own app. Don't worry, we'll go through how this is done soon.
 
-For usage inside a Titanium app you have to insert 3 paramters in your tiapp.xml:
+For usage inside a Titanium app you have to insert 3 parameters in your tiapp.xml:
 ```xml
 <property name="FLIC_ID" type="String"></property>
 <property name="FLIC_SECRET" type="String"></property>
@@ -36,6 +38,5 @@ In your tiapp.xml (or manifest) you have to put:
 var Flic = require("ti.flic");
 Flic.init();
 Flic.addEventListener("noflicapp",handleWarningAboutFlicApp);
-
-
+Ti.App.addEventListener("flic",handleFlicEvent);
 ```
