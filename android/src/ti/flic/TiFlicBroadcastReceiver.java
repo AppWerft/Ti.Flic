@@ -7,10 +7,8 @@ import io.flic.lib.FlicManager;
 
 public class TiFlicBroadcastReceiver extends FlicBroadcastReceiver {
 	@Override
-	protected void onRequestAppCredentials(Context context) {
-		FlicManager.setAppCredentials(FlicModule.appId, FlicModule.appSecret,
-				FlicModule.appName);
-
+	protected void onRequestAppCredentials(Context ctx) {
+		Config.setFlicCredentials();
 	}
 
 	@Override
