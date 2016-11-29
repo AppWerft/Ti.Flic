@@ -3,7 +3,8 @@
 
 <img src="https://cdn.shopify.com/s/files/1/1089/5800/products/flic-teal-grey.jpg?v=1475748747" width=240 />
 
-Ti.Flic is an open-source project to support the Flic Android-SDK in Appcelerator's Titanium Mobile. The IOS-version you can find [here](https://github.com/hansemannn/ti.flic)
+Ti.Flic is an open-source project to support the Flic Android-SDK in Appcelerator's Titanium Mobile. The IOS-version from Hansemann you can find [here](https://github.com/hansemannn/ti.flic).
+
 This module is highly work in progress and should not be used in any productional environment!
  Hint: send me a button and then I can test and complete the module. ;-)
 
