@@ -1,7 +1,7 @@
 #Ti.Flic
 
 
-<img src="https://cdn.shopify.com/s/files/1/1089/5800/products/flic-teal-grey.jpg?v=1475748747" width=240 />
+<img src="https://slack-imgs.com/?c=1&url=http%3A%2F%2Fflic.io%2Fassets%2Fimg%2Fflic_logo_black.jpg" width=240 />
 
 Ti.Flic is an open-source project to support the Flic Android-SDK in Appcelerator's Titanium Mobile. The IOS-version from Hansemann you can find [here](https://github.com/hansemannn/ti.flic).
 
