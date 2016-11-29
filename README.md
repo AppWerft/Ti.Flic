@@ -1,7 +1,11 @@
 #Ti.Flic
+
+
 <img src="https://cdn.shopify.com/s/files/1/1089/5800/products/flic-teal-grey.jpg?v=1475748747" width=240 />
 
-This is the Titanium module for flic buttons. It is still in working progress. Hint: send me a button and then I can test and complete the module. ;-)
+Ti.Flic is an open-source project to support the Flic Android-SDK in Appcelerator's Titanium Mobile. The IOS-version you can find [here](https://github.com/hansemannn/ti.flic)
+This module is highly work in progress and should not be used in any productional environment!
+ Hint: send me a button and then I can test and complete the module. ;-)
 
 The first thing we need to do is to make sure you have the Flic app installed. 
 Why do I need the Flic app? The fliclib works with the Flic app so that you don't have to worry about handling the Flics, scanning the Flics, or monitoring the communication with them. All of that is taken care of by the Flic app.
