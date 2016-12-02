@@ -18,6 +18,9 @@ public class TiFlicBroadcastReceiver extends FlicBroadcastReceiver {
 			boolean wasQueued, int timeDiff, boolean isUp, boolean isDown) {
 		KrollDict event = new KrollDict();
 		event.put("timeDiff", timeDiff);
+		event.put("UUID", button.getButtonId());
+		event.put("buttonName", button.getName());
+
 		if (isUp) {
 			event.put("action", "down");
 		} else {
@@ -30,6 +33,6 @@ public class TiFlicBroadcastReceiver extends FlicBroadcastReceiver {
 	public void onButtonRemoved(Context context, FlicButton button) {
 		KrollDict event = new KrollDict();
 		event.put("removed", true);
-		TiApplication.getInstance().fireAppEvent("flic", event);
+		TiApplication.getInstance().fireAppEvent("flicbutton", event);
 	}
 }

@@ -43,5 +43,7 @@ In your tiapp.xml (or manifest) you have to put:
 var Flic = require("ti.flic");
 Flic.init();
 Flic.addEventListener("noflicapp",handleWarningAboutFlicApp);
-Ti.App.addEventListener("flic",handleFlicEvent);
+Ti.App.addEventListener("flicgrab",handleFlicGrabEvent); // getting UUID + buttonName
+Ti.App.addEventListener("flicbutton",handleFlicButtonEvent); // getting UUID, buttonName, up/down
+
 ```

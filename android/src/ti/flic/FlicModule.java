@@ -89,10 +89,14 @@ public class FlicModule extends KrollModule implements TiActivityResultHandler {
 							| FlicBroadcastReceiverFlags.REMOVED);
 
 					event.put("message", "Grabbed a button");
+					event.put("grabbed", true);
+					event.put("UUID", button.getButtonId());
+					event.put("buttonName", button.getName());
 				} else {
 					event.put("message", "Did not grab any button");
+					event.put("grabbed", false);
 				}
-				TiApplication.getInstance().fireAppEvent("flic", event);
+				TiApplication.getInstance().fireAppEvent("flicgrab", event);
 			}
 		});
 	}
