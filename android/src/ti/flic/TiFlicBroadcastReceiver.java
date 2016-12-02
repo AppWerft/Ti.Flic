@@ -1,9 +1,11 @@
 package ti.flic;
 
-import android.content.Context;
+import org.appcelerator.kroll.KrollDict;
+import org.appcelerator.titanium.TiApplication;
+
 import io.flic.lib.FlicBroadcastReceiver;
 import io.flic.lib.FlicButton;
-import io.flic.lib.FlicManager;
+import android.content.Context;
 
 public class TiFlicBroadcastReceiver extends FlicBroadcastReceiver {
 	@Override
@@ -14,16 +16,20 @@ public class TiFlicBroadcastReceiver extends FlicBroadcastReceiver {
 	@Override
 	public void onButtonUpOrDown(Context context, FlicButton button,
 			boolean wasQueued, int timeDiff, boolean isUp, boolean isDown) {
+		KrollDict event = new KrollDict();
+		event.put("timeDiff", timeDiff);
 		if (isUp) {
-			// Code for button up event here
+			event.put("action", "down");
 		} else {
-			// Code for button down event here
+			event.put("action", "up");
 		}
+		TiApplication.getInstance().fireAppEvent("flic", event);
 	}
 
 	@Override
 	public void onButtonRemoved(Context context, FlicButton button) {
-		// Button was removed
+		KrollDict event = new KrollDict();
+		event.put("removed", true);
+		TiApplication.getInstance().fireAppEvent("flic", event);
 	}
-
 }
