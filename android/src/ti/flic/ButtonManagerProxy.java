@@ -31,10 +31,8 @@ import android.content.Context;
 // This proxy can be created by calling Oaipmh.createExample({message: "hello world"})
 @Kroll.proxy(creatableInModule = FlicModule.class)
 public class ButtonManagerProxy extends KrollProxy {
-	// Standard Debugging variables
 	private static final String LCAT = "";
 	Context ctx = TiApplication.getInstance().getApplicationContext();
-	private String ENDPOINT;
 	KrollFunction onErrorCallback;
 	KrollFunction onGrabCallback;
 	private FlicManager flicManager;
@@ -47,6 +45,12 @@ public class ButtonManagerProxy extends KrollProxy {
 	@Override
 	public void handleCreationDict(KrollDict options) {
 		super.handleCreationDict(options);
+		if (options.containsKeyAndNotNull("onsuccess")) {
+			onGrabCallback = (KrollFunction) options.get("onsuccess");
+		}
+		if (options.containsKeyAndNotNull("onerror")) {
+			onErrorCallback = (KrollFunction) options.get("onerror");
+		}
 		init();
 
 	}
@@ -57,7 +61,7 @@ public class ButtonManagerProxy extends KrollProxy {
 	}
 
 	@Kroll.method
-	public KrollDict getKnownButton(String uuid) {
+	public KrollDict getKnownButtons() {
 		KrollDict result = new KrollDict();
 		for (FlicButton button : flicManager.getKnownButtons()) {
 			result.put("name", button.getName());
@@ -77,7 +81,6 @@ public class ButtonManagerProxy extends KrollProxy {
 		 */
 		try {
 			FlicManager.getInstance(ctx, new FlicManagerInitializedCallback() {
-
 				@Override
 				public void onInitialized(FlicManager manager) {
 					flicManager = manager;
@@ -89,6 +92,9 @@ public class ButtonManagerProxy extends KrollProxy {
 		} catch (FlicAppNotInstalledException err) {
 			if (hasListeners("error")) {
 				fireEvent("error", new KrollDict());
+			}
+			if (onGrabCallback != null) {
+				onGrabCallback.call(getKrollObject(), new KrollDict());
 			}
 			Log.e(LCAT, "Flic App is not installed");
 		}

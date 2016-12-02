@@ -41,12 +41,13 @@ In your tiapp.xml (or manifest) you have to put:
 
 ```javascript
 var Flic = require("ti.flic");
-var manager = Flic.createFlicMananger();
-// Module events:
-Flic.addEventListener("error",handleWarningAboutFlicApp);
-Flic.addEventListener("success",handleFlicGrabEvent); // getting UUID + buttonName
+var flicManager = Flic.createFlicMananger({
+	onsuccess : handleFlicGrabEvent, // getting UUID + buttonName
+	onerror : handleWarningAboutFlicApp
+});
+
 //Button events (even app is not running	)
 Ti.App.addEventListener("flicbutton",handleFlicButtonEvent); // getting UUID, buttonName, up/down
-manager.forgetButton(UUID);
-manager.getKnownButton(); // returns list of name + uuid
+flicManager.forgetButton(UUID);
+flicManager.getKnownButtons(); // returns list of name + uuid
 ```

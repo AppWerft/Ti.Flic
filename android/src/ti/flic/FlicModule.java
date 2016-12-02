@@ -45,33 +45,6 @@ public class FlicModule extends KrollModule implements TiActivityResultHandler {
 		Config.setFlicCredentials();
 	}
 
-	@Kroll.method
-	public void Init() {
-		/*
-		 * We will now use the manager that can be used to grab a button from
-		 * the Flic app. The Flic app will be opened up, and the user will be
-		 * prompted to select one of his/her connected buttons. It will then
-		 * send information about the button back to our app so that we can
-		 * start using it. In an activity, this code is used to grab a button.
-		 */
-		try {
-			FlicManager.getInstance(ctx, new FlicManagerInitializedCallback() {
-
-				@Override
-				public void onInitialized(FlicManager manager) {
-					manager.initiateGrabButton(TiApplication
-							.getAppRootOrCurrentActivity());
-				}
-
-			});
-		} catch (FlicAppNotInstalledException err) {
-			if (hasListeners("error")) {
-				fireEvent("error", new KrollDict());
-			}
-			Log.e(LCAT, "Flic App is not installed");
-		}
-	}
-
 	/*
 	 * To receive the button object, we must feed the result into the manager
 	 * which then returns the button object. With the button object, we register
