@@ -42,8 +42,10 @@ In your tiapp.xml (or manifest) you have to put:
 ```javascript
 var Flic = require("ti.flic");
 Flic.init();
-Flic.addEventListener("noflicapp",handleWarningAboutFlicApp);
-Ti.App.addEventListener("flicgrab",handleFlicGrabEvent); // getting UUID + buttonName
+// Module events:
+Flic.addEventListener("error",handleWarningAboutFlicApp);
+Flic.addEventListener("success",handleFlicGrabEvent); // getting UUID + buttonName
+//Button events (even app is not running	)
 Ti.App.addEventListener("flicbutton",handleFlicButtonEvent); // getting UUID, buttonName, up/down
 
 ```

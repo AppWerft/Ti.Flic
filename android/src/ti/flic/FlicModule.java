@@ -65,6 +65,9 @@ public class FlicModule extends KrollModule implements TiActivityResultHandler {
 
 			});
 		} catch (FlicAppNotInstalledException err) {
+			if (hasListeners("error")) {
+				fireEvent("error", new KrollDict());
+			}
 			Log.e(LCAT, "Flic App is not installed");
 		}
 	}
@@ -96,7 +99,9 @@ public class FlicModule extends KrollModule implements TiActivityResultHandler {
 					event.put("message", "Did not grab any button");
 					event.put("grabbed", false);
 				}
-				TiApplication.getInstance().fireAppEvent("flicgrab", event);
+				if (hasListeners("error"))
+					fireEvent("success", event);
+
 			}
 		});
 	}
