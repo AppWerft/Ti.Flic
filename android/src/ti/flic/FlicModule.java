@@ -90,7 +90,6 @@ public class FlicModule extends KrollModule implements TiActivityResultHandler {
 				if (button != null) {
 					button.registerListenForBroadcast(FlicBroadcastReceiverFlags.UP_OR_DOWN
 							| FlicBroadcastReceiverFlags.REMOVED);
-
 					event.put("message", "Grabbed a button");
 					event.put("grabbed", true);
 					event.put("UUID", button.getButtonId());
@@ -101,7 +100,6 @@ public class FlicModule extends KrollModule implements TiActivityResultHandler {
 				}
 				if (hasListeners("error"))
 					fireEvent("success", event);
-
 			}
 		});
 	}
