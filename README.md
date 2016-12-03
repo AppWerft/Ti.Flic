@@ -47,7 +47,8 @@ var flicManager = Flic.createFlicMananger({
 });
 
 //Button events (even app is not running	)
-flicManager.addEventListener("flicbutton",handleFlicButtonEvent); // getting UUID, buttonName, up/down
+Ti.App.addEventListener("flicbutton",handleFlicButtonEvent); // getting UUID, buttonName, up/down
+
 flicManager.forgetButton(UUID);
 flicManager.getKnownButtons(); // returns list of name + uuid
 ```
