@@ -52,7 +52,6 @@ public class ButtonManagerProxy extends KrollProxy {
 			onErrorCallback = (KrollFunction) options.get("onerror");
 		}
 		init();
-
 	}
 
 	@Kroll.method
