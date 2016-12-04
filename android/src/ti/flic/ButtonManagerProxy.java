@@ -9,6 +9,7 @@
 package ti.flic;
 
 import io.flic.lib.FlicAppNotInstalledException;
+import io.flic.lib.FlicBroadcastReceiverFlags;
 import io.flic.lib.FlicButton;
 import io.flic.lib.FlicManager;
 import io.flic.lib.FlicManagerInitializedCallback;
@@ -25,12 +26,16 @@ import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.kroll.common.Log;
 import org.appcelerator.titanium.TiApplication;
 import org.appcelerator.titanium.TiC;
+import org.appcelerator.titanium.util.TiActivityResultHandler;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 
 // This proxy can be created by calling Oaipmh.createExample({message: "hello world"})
 @Kroll.proxy(creatableInModule = FlicModule.class)
-public class ButtonManagerProxy extends KrollProxy {
+public class ButtonManagerProxy extends KrollProxy implements
+		TiActivityResultHandler {
 	private static final String LCAT = "";
 	Context ctx = TiApplication.getInstance().getApplicationContext();
 	KrollFunction onErrorCallback;
@@ -70,6 +75,36 @@ public class ButtonManagerProxy extends KrollProxy {
 
 	}
 
+	@Override
+	public void onResult(Activity activity, final int requestCode,
+			final int resultCode, final Intent data) {
+		FlicManager.getInstance(ctx, new FlicManagerInitializedCallback() {
+			@Override
+			public void onInitialized(FlicManager flicManager) {
+				FlicButton button = flicManager.completeGrabButton(requestCode,
+						resultCode, data);
+				KrollDict event = new KrollDict();
+				if (button != null) {
+					button.registerListenForBroadcast(FlicBroadcastReceiverFlags.UP_OR_DOWN
+							| FlicBroadcastReceiverFlags.REMOVED);
+					event.put("message", "Grabbed a button");
+					event.put("grabbed", true);
+					event.put("UUID", button.getButtonId());
+					event.put("buttonName", button.getName());
+				} else {
+					event.put("message", "Did not grab any button");
+					event.put("grabbed", false);
+				}
+				if (hasListeners("error"))
+					fireEvent("success", event);
+			}
+		});
+	}
+
+	@Override
+	public void onError(Activity arg0, int arg1, Exception arg2) {
+	}
+
 	private void init() {
 		/*
 		 * We will now use the manager that can be used to grab a button from
@@ -81,8 +116,8 @@ public class ButtonManagerProxy extends KrollProxy {
 		try {
 			FlicManager.getInstance(ctx, new FlicManagerInitializedCallback() {
 				@Override
-				public void onInitialized(FlicManager manager) {
-					flicManager = manager;
+				public void onInitialized(FlicManager flicManager) {
+					ButtonManagerProxy.this.flicManager = flicManager;
 					flicManager.initiateGrabButton(TiApplication
 							.getAppRootOrCurrentActivity());
 				}
