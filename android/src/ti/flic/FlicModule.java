@@ -27,7 +27,7 @@ import android.content.Context;
 import android.content.Intent;
 
 @Kroll.module(name = "Flic", id = "ti.flic")
-public class FlicModule extends KrollModule implements TiActivityResultHandler {
+public class FlicModule extends KrollModule {
 
 	private static final String LCAT = "FickModule";
 	private Context ctx;
@@ -51,34 +51,5 @@ public class FlicModule extends KrollModule implements TiActivityResultHandler {
 	 * for notifications. In this example, we’re only interested in down, up and
 	 * remove events.
 	 */
-	@Override
-	public void onResult(Activity activity, final int requestCode,
-			final int resultCode, final Intent data) {
-		FlicManager.getInstance(ctx, new FlicManagerInitializedCallback() {
-			@Override
-			public void onInitialized(FlicManager manager) {
-				FlicButton button = manager.completeGrabButton(requestCode,
-						resultCode, data);
-				KrollDict event = new KrollDict();
-				if (button != null) {
-					button.registerListenForBroadcast(FlicBroadcastReceiverFlags.UP_OR_DOWN
-							| FlicBroadcastReceiverFlags.REMOVED);
-					event.put("message", "Grabbed a button");
-					event.put("grabbed", true);
-					event.put("UUID", button.getButtonId());
-					event.put("buttonName", button.getName());
-				} else {
-					event.put("message", "Did not grab any button");
-					event.put("grabbed", false);
-				}
-				if (hasListeners("error"))
-					fireEvent("success", event);
-			}
-		});
-	}
-
-	@Override
-	public void onError(Activity arg0, int arg1, Exception arg2) {
-	}
 
 }
