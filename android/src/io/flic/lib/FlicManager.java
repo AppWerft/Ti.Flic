@@ -25,6 +25,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import org.appcelerator.titanium.TiApplication;
+import org.appcelerator.titanium.util.TiActivityResultHandler;
+import org.appcelerator.titanium.util.TiActivitySupport;
+
 /**
  * Flic Manager.
  *
@@ -59,6 +63,18 @@ public final class FlicManager {
 	boolean isInitializing;
 	IFlicLibInterface mIntf;
 	long mIntfId;
+
+	private final class LaunchActivityResultHandler implements
+			TiActivityResultHandler {
+		@Override
+		public void onError(Activity activity, int arg1, Exception e) {
+		}
+
+		@Override
+		public void onResult(Activity activity, int arg1, int arg2,
+				Intent intent) {
+		}
+	}
 
 	private static class FlicManagerCallback {
 		public void onInitialized() {
@@ -528,6 +544,24 @@ public final class FlicManager {
 		intent.putExtra("appSecret", mAppSecret);
 		currentActivity
 				.startActivityForResult(intent, GRAB_BUTTON_REQUEST_CODE);
+	}
+
+	public void initiateGrabButton() {
+		Intent intent = new Intent("io.flic.app.GrabButton");
+		intent.setPackage("io.flic.app");
+		byte[] secretKey = new byte[32];
+		byte[] publicKey = new byte[32];
+		mSecRand.nextBytes(secretKey);
+		Curve25519.keygen(publicKey, secretKey);
+		mLastPrivateCurve25519Key = secretKey;
+		intent.putExtra("token", publicKey);
+		intent.putExtra("intfId", mIntfId);
+		intent.putExtra("appId", mAppId);
+		intent.putExtra("appSecret", mAppSecret);
+		TiActivitySupport activitySupport = (TiActivitySupport) TiApplication
+				.getInstance().getCurrentActivity();
+		activitySupport.launchActivityForResult(intent,
+				GRAB_BUTTON_REQUEST_CODE, new LaunchActivityResultHandler());
 	}
 
 	/**
