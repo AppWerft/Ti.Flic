@@ -58,23 +58,10 @@ public final class FlicManager {
 	private String mAppId;
 	private String mAppSecret;
 	private String mAppName;
-
 	final Object mIntfLock = new Object();
 	boolean isInitializing;
 	IFlicLibInterface mIntf;
 	long mIntfId;
-
-	private final class LaunchActivityResultHandler implements
-			TiActivityResultHandler {
-		@Override
-		public void onError(Activity activity, int arg1, Exception e) {
-		}
-
-		@Override
-		public void onResult(Activity activity, int arg1, int arg2,
-				Intent intent) {
-		}
-	}
 
 	private static class FlicManagerCallback {
 		public void onInitialized() {
@@ -546,7 +533,12 @@ public final class FlicManager {
 				.startActivityForResult(intent, GRAB_BUTTON_REQUEST_CODE);
 	}
 
-	public void initiateGrabButton() {
+	public interface onResultHandler {
+		public void onResult(int r, Intent i);
+	}
+
+	public void initiateGrabButton(TiActivityResultHandler resultHandler) {
+
 		Intent intent = new Intent("io.flic.app.GrabButton");
 		intent.setPackage("io.flic.app");
 		byte[] secretKey = new byte[32];
@@ -561,7 +553,8 @@ public final class FlicManager {
 		TiActivitySupport activitySupport = (TiActivitySupport) TiApplication
 				.getInstance().getCurrentActivity();
 		activitySupport.launchActivityForResult(intent,
-				GRAB_BUTTON_REQUEST_CODE, new LaunchActivityResultHandler());
+				GRAB_BUTTON_REQUEST_CODE, resultHandler);
+
 	}
 
 	/**
