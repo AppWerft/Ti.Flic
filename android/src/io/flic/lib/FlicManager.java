@@ -518,27 +518,18 @@ public final class FlicManager {
 	 *            The current activity initiating the button grabbing.
 	 */
 	public void initiateGrabButton(Activity currentActivity) {
-		Intent intent = new Intent("io.flic.app.GrabButton");
-		intent.setPackage("io.flic.app");
-		byte[] secretKey = new byte[32];
-		byte[] publicKey = new byte[32];
-		mSecRand.nextBytes(secretKey);
-		Curve25519.keygen(publicKey, secretKey);
-		mLastPrivateCurve25519Key = secretKey;
-		intent.putExtra("token", publicKey);
-		intent.putExtra("intfId", mIntfId);
-		intent.putExtra("appId", mAppId);
-		intent.putExtra("appSecret", mAppSecret);
-		currentActivity
-				.startActivityForResult(intent, GRAB_BUTTON_REQUEST_CODE);
-	}
-
-	public interface onResultHandler {
-		public void onResult(int r, Intent i);
+		currentActivity.startActivityForResult(createIntent(),
+				GRAB_BUTTON_REQUEST_CODE);
 	}
 
 	public void initiateGrabButton(TiActivityResultHandler resultHandler) {
+		TiActivitySupport activitySupport = (TiActivitySupport) TiApplication
+				.getInstance().getCurrentActivity();
+		activitySupport.launchActivityForResult(createIntent(),
+				GRAB_BUTTON_REQUEST_CODE, resultHandler);
+	}
 
+	private Intent createIntent() {
 		Intent intent = new Intent("io.flic.app.GrabButton");
 		intent.setPackage("io.flic.app");
 		byte[] secretKey = new byte[32];
@@ -550,11 +541,7 @@ public final class FlicManager {
 		intent.putExtra("intfId", mIntfId);
 		intent.putExtra("appId", mAppId);
 		intent.putExtra("appSecret", mAppSecret);
-		TiActivitySupport activitySupport = (TiActivitySupport) TiApplication
-				.getInstance().getCurrentActivity();
-		activitySupport.launchActivityForResult(intent,
-				GRAB_BUTTON_REQUEST_CODE, resultHandler);
-
+		return intent;
 	}
 
 	/**

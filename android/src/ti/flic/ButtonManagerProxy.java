@@ -105,9 +105,7 @@ public class ButtonManagerProxy extends KrollProxy implements
 	public void onError(Activity arg0, int arg1, Exception arg2) {
 	}
 
-	private void initiateGrabButton(
-
-	) {
+	private void initiateGrabButton() {
 		/*
 		 * We will now use the manager that can be used to grab a button from
 		 * the Flic app. The Flic app will be opened up, and the user will be
@@ -115,29 +113,33 @@ public class ButtonManagerProxy extends KrollProxy implements
 		 * send information about the button back to our app so that we can
 		 * start using it. In an activity, this code is used to grab a button.
 		 */
-		;
+		final TiActivityResultHandler resultHandler = new TiActivityResultHandler() {
+			@Override
+			public void onResult(Activity activity, int requestCode,
+					int resultCode, Intent data) {
+			}
 
-		Activity activity = TiApplication.getAppCurrentActivity();
+			@Override
+			public void onError(Activity activity, int requestCode, Exception e) {
+			}
+		};
+
 		try {
 			FlicManager.getInstance(ctx, new FlicManagerInitializedCallback() {
 				@Override
 				public void onInitialized(FlicManager flicManager) {
-					// if app installed we get a FlicManager instance, saving as
-					// proxy property
 					ButtonManagerProxy.this.flicManager = flicManager;
-					// open the layer:
-					flicManager
-							.initiateGrabButton(new TiActivityResultHandler() {
-								public void onError(Activity a,
-										int requestCode, Exception e) {
-								}
+					if (TiApplication.isUIThread()) {
+						flicManager.initiateGrabButton(resultHandler);
+					} else {
+						TiMessenger.postOnMain(new Runnable() {
+							@Override
+							public void run() {
+								flicManager.initiateGrabButton(resultHandler);
+							}
+						});
+					}
 
-								public void onResult(Activity a,
-										int requestCode, int resultCode,
-										Intent intent) {
-
-								}
-							});
 				}
 
 			});
