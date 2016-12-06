@@ -14,11 +14,6 @@ import io.flic.lib.FlicButton;
 import io.flic.lib.FlicManager;
 import io.flic.lib.FlicManagerInitializedCallback;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.List;
-
 import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.kroll.KrollFunction;
 import org.appcelerator.kroll.KrollProxy;
@@ -26,7 +21,6 @@ import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.kroll.common.Log;
 import org.appcelerator.kroll.common.TiMessenger;
 import org.appcelerator.titanium.TiApplication;
-import org.appcelerator.titanium.TiC;
 import org.appcelerator.titanium.util.TiActivityResultHandler;
 
 import android.app.Activity;
@@ -45,6 +39,7 @@ public class ButtonManagerProxy extends KrollProxy {
 	// Constructor
 	public ButtonManagerProxy() {
 		super();
+
 	}
 
 	@Override
