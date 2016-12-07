@@ -518,18 +518,19 @@ public final class FlicManager {
 	 *            The current activity initiating the button grabbing.
 	 */
 	public void initiateGrabButton(Activity currentActivity) {
-		currentActivity.startActivityForResult(createIntent(),
-				GRAB_BUTTON_REQUEST_CODE);
+		currentActivity.startActivityForResult(
+				createIntentForInitiateGrabButton(), GRAB_BUTTON_REQUEST_CODE);
 	}
 
 	public void initiateGrabButton(TiActivityResultHandler resultHandler) {
 		TiActivitySupport activitySupport = (TiActivitySupport) TiApplication
 				.getInstance().getCurrentActivity();
-		activitySupport.launchActivityForResult(createIntent(),
-				GRAB_BUTTON_REQUEST_CODE, resultHandler);
+		activitySupport.launchActivityForResult(
+				createIntentForInitiateGrabButton(), GRAB_BUTTON_REQUEST_CODE,
+				resultHandler);
 	}
 
-	private Intent createIntent() {
+	public Intent createIntentForInitiateGrabButton() {
 		Intent intent = new Intent("io.flic.app.GrabButton");
 		intent.setPackage("io.flic.app");
 		byte[] secretKey = new byte[32];

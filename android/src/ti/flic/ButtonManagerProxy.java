@@ -22,6 +22,7 @@ import org.appcelerator.kroll.common.Log;
 import org.appcelerator.kroll.common.TiMessenger;
 import org.appcelerator.titanium.TiApplication;
 import org.appcelerator.titanium.util.TiActivityResultHandler;
+import org.appcelerator.titanium.util.TiActivitySupport;
 
 import android.app.Activity;
 import android.content.Context;
@@ -39,7 +40,6 @@ public class ButtonManagerProxy extends KrollProxy {
 	// Constructor
 	public ButtonManagerProxy() {
 		super();
-
 	}
 
 	@Override
@@ -96,6 +96,9 @@ public class ButtonManagerProxy extends KrollProxy {
 									event.put("message", "Grabbed a button");
 									event.put("grabbed", true);
 									event.put("UUID", button.getButtonId());
+									event.put("button", button.toString());
+									event.put("status",
+											button.getConnectionStatus());
 									event.put("buttonName", button.getName());
 								} else {
 									event.put("message",
@@ -119,13 +122,23 @@ public class ButtonManagerProxy extends KrollProxy {
 				@Override
 				public void onInitialized(FlicManager flicManager) {
 					ButtonManagerProxy.this.flicManager = flicManager;
+					TiActivitySupport activitySupport = (TiActivitySupport) TiApplication
+							.getInstance().getCurrentActivity();
+
 					if (TiApplication.isUIThread()) {
-						flicManager.initiateGrabButton(resultHandler);
+						activitySupport.launchActivityForResult(
+								flicManager.createIntentForInitiateGrabButton(),
+								FlicManager.GRAB_BUTTON_REQUEST_CODE,
+								resultHandler);
 					} else {
 						TiMessenger.postOnMain(new Runnable() {
 							@Override
 							public void run() {
-								flicManager.initiateGrabButton(resultHandler);
+								activitySupport.launchActivityForResult(
+										flicManager
+												.createIntentForInitiateGrabButton(),
+										FlicManager.GRAB_BUTTON_REQUEST_CODE,
+										resultHandler);
 							}
 						});
 					}

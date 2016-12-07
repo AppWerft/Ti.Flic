@@ -23,33 +23,26 @@ import org.appcelerator.titanium.util.TiActivityResultHandler;
 import org.appcelerator.kroll.common.Log;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 
 @Kroll.module(name = "Flic", id = "ti.flic")
 public class FlicModule extends KrollModule {
+	@Kroll.constant
+	public int BUTTON_CONNECTION_COMPLETED = FlicButton.BUTTON_CONNECTION_COMPLETED;
+	@Kroll.constant
+	public int BUTTON_CONNECTION_STARTED = FlicButton.BUTTON_CONNECTION_STARTED;
+	@Kroll.constant
+	public int BUTTON_DISCONNECTED = FlicButton.BUTTON_DISCONNECTED;
 
-	private static final String LCAT = "FickModule";
-	private Context ctx;
 	static String appId;
 	static String appSecret;
 	static String appName;
 
 	public FlicModule() {
 		super();
-		ctx = TiApplication.getInstance();
 	}
 
 	@Kroll.onAppCreate
 	public static void onAppCreate(TiApplication app) {
 		Config.setFlicCredentials();
 	}
-
-	/*
-	 * To receive the button object, we must feed the result into the manager
-	 * which then returns the button object. With the button object, we register
-	 * for notifications. In this example, we’re only interested in down, up and
-	 * remove events.
-	 */
-
 }
