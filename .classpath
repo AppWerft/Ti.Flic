@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="io/*" including="ti/*" kind="src" path="android/src"/>
+	<classpathentry kind="src" path="android/src"/>
 	<classpathentry kind="src" path="android/aidl"/>
 	<classpathentry kind="src" path="android/build/.apt_generated"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
@@ -13,6 +13,5 @@
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/fuerst/Documents/APPC_WORKSPACE/Ti.Flic/android/lib/flic.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

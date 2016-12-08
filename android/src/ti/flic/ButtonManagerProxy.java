@@ -80,8 +80,8 @@ public class ButtonManagerProxy extends KrollProxy {
 		 */
 		final TiActivityResultHandler resultHandler = new TiActivityResultHandler() {
 			@Override
-			public void onResult(Activity activity, int requestCode,
-					int resultCode, Intent data) {
+			public void onResult(Activity activity, final int requestCode,
+					final int resultCode, final Intent data) {
 				FlicManager.getInstance(ctx,
 						new FlicManagerInitializedCallback() {
 							@Override
