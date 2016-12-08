@@ -36,13 +36,20 @@ In your tiapp.xml (or manifest) you have to put:
     </intent-filter>
 </receiver>
 ```
+##Constants
+```java
+var Flic = require("ti.flic");
+Flic.BUTTON_CONNECTION_COMPLETED;
+Flic.BUTTON_CONNECTION_STARTED;
+Flic.BUTTON_DISCONNECTED;
+```
 
 ##Usage:
 
 ```javascript
 var Flic = require("ti.flic");
 var flicManager = Flic.createFlicMananger({
-	onsuccess : handleFlicGrabEvent, // getting UUID + buttonName
+	onsuccess : handleFlicGrabEvent, // getting UUID + buttonName, ...
 	onerror : handleWarningAboutFlicApp
 });
 
