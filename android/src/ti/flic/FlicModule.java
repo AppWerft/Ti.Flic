@@ -8,21 +8,11 @@
  */
 package ti.flic;
 
-import io.flic.lib.FlicAppNotInstalledException;
-import io.flic.lib.FlicBroadcastReceiverFlags;
 import io.flic.lib.FlicButton;
-import io.flic.lib.FlicManager;
-import io.flic.lib.FlicManagerInitializedCallback;
 
-import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.titanium.TiApplication;
-import org.appcelerator.titanium.TiProperties;
-import org.appcelerator.titanium.util.TiActivityResultHandler;
-import org.appcelerator.kroll.common.Log;
-
-import android.app.Activity;
 
 @Kroll.module(name = "Flic", id = "ti.flic")
 public class FlicModule extends KrollModule {
