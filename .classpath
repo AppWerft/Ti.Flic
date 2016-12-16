@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry including="io/*|ti/*" kind="src" path="android/src"/>
+	<classpathentry kind="src" path="android/src"/>
 	<classpathentry kind="src" path="android/aidl"/>
 	<classpathentry kind="src" path="android/build/.apt_generated"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>

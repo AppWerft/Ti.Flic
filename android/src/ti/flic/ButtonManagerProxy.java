@@ -23,16 +23,17 @@ import android.content.Intent;
 // This proxy can be created by calling Oaipmh.createExample({message: "hello world"})
 @Kroll.proxy(creatableInModule = FlicModule.class)
 public class ButtonManagerProxy extends KrollProxy {
-	private static final String LCAT = "";
+	private static final String LCAT = "TiFlic";
 	Context ctx = TiApplication.getInstance().getApplicationContext();
 	KrollFunction onErrorCallback;
 	KrollFunction onGrabCallback;
-	
+
 	FlicManager flicManager;
 
 	// Constructor
 	public ButtonManagerProxy() {
 		super();
+		Log.d(LCAT, "ButtonManagerProxy constructor");
 	}
 
 	@Override
@@ -60,7 +61,6 @@ public class ButtonManagerProxy extends KrollProxy {
 			result.put("uuid", button.getButtonId());
 		}
 		return result;
-
 	}
 
 	private void initiateGrabButton() {
@@ -71,9 +71,9 @@ public class ButtonManagerProxy extends KrollProxy {
 		 * send information about the button back to our app so that we can
 		 * start using it. In an activity, this code is used to grab a button.
 		 */
-		
+		Log.d(LCAT, "initiateGrabButton");
 		final TiActivityResultHandler resultHandler = new TiActivityResultHandler() {
-			
+
 			@Override
 			public void onResult(Activity activity, final int requestCode,
 					final int resultCode, final Intent data) {
@@ -81,6 +81,7 @@ public class ButtonManagerProxy extends KrollProxy {
 						new FlicManagerInitializedCallback() {
 							@Override
 							public void onInitialized(FlicManager flicManager) {
+								Log.d(LCAT, "onInitialized");
 								ButtonManagerProxy.this.flicManager = flicManager;
 								FlicButton button = flicManager
 										.completeGrabButton(requestCode,
@@ -96,13 +97,18 @@ public class ButtonManagerProxy extends KrollProxy {
 									event.put("status",
 											button.getConnectionStatus());
 									event.put("buttonName", button.getName());
+									Log.d(LCAT, event.toString());
+									if (onGrabCallback != null) {
+										onGrabCallback.call(getKrollObject(),
+												event);
+									}
 								} else {
 									event.put("message",
 											"Did not grab any button");
 									event.put("grabbed", false);
 								}
 								if (hasListeners("error"))
-									fireEvent("success", event);
+									fireEvent("error", event);
 							}
 						});
 
@@ -117,10 +123,10 @@ public class ButtonManagerProxy extends KrollProxy {
 			FlicManager.getInstance(ctx, new FlicManagerInitializedCallback() {
 				final TiActivitySupport activitySupport = (TiActivitySupport) TiApplication
 						.getInstance().getCurrentActivity();
+
 				@Override
 				public void onInitialized(final FlicManager flicManager) {
-//					ButtonManagerProxy.this.flicManager = flicManager;
-					
+					// ButtonManagerProxy.this.flicManager = flicManager;
 
 					if (TiApplication.isUIThread()) {
 						activitySupport.launchActivityForResult(

@@ -17,11 +17,11 @@ import org.appcelerator.titanium.TiApplication;
 @Kroll.module(name = "Flic", id = "ti.flic")
 public class FlicModule extends KrollModule {
 	@Kroll.constant
-	public int BUTTON_CONNECTION_COMPLETED = FlicButton.BUTTON_CONNECTION_COMPLETED;
+	public static final int BUTTON_CONNECTION_COMPLETED = FlicButton.BUTTON_CONNECTION_COMPLETED;
 	@Kroll.constant
-	public int BUTTON_CONNECTION_STARTED = FlicButton.BUTTON_CONNECTION_STARTED;
+	public static final int BUTTON_CONNECTION_STARTED = FlicButton.BUTTON_CONNECTION_STARTED;
 	@Kroll.constant
-	public int BUTTON_DISCONNECTED = FlicButton.BUTTON_DISCONNECTED;
+	public static final int BUTTON_DISCONNECTED = FlicButton.BUTTON_DISCONNECTED;
 
 	static String appId;
 	static String appSecret;
