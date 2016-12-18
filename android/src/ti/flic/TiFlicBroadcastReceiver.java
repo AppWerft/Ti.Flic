@@ -8,6 +8,12 @@ import io.flic.lib.FlicButton;
 import android.content.Context;
 
 public class TiFlicBroadcastReceiver extends FlicBroadcastReceiver {
+	private TiApplication instance;
+
+	public TiFlicBroadcastReceiver() {
+		instance = TiApplication.getInstance();
+	}
+
 	@Override
 	protected void onRequestAppCredentials(Context ctx) {
 		Config.setFlicCredentials();
@@ -26,7 +32,7 @@ public class TiFlicBroadcastReceiver extends FlicBroadcastReceiver {
 		} else {
 			event.put("action", "up");
 		}
-		TiApplication.getInstance().fireAppEvent("flic", event);
+		instance.fireAppEvent("flic", event);
 	}
 
 	@Override
