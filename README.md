@@ -55,7 +55,7 @@ FlicManager.initiateGrabButton({
 });
 
 //Button events (even app is not running	)
-Ti.App.addEventListener("flicbutton",handleFlicButtonEvent); // getting UUID, buttonName, up/down
+Ti.App.addEventListener("flic",handleFlicButtonEvent); // getting UUID, buttonName, up/down
 
 flicManager.forgetButton(UUID);
 flicManager.getKnownButtons(); // returns list of name + uuid
