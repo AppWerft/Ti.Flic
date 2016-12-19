@@ -36,16 +36,19 @@ public class ButtonManagerProxy extends KrollProxy {
 		Log.d(LCAT, "ButtonManagerProxy constructor");
 	}
 
-	@Override
-	public void handleCreationDict(KrollDict options) {
-		super.handleCreationDict(options);
+	private void importOptions(KrollDict options) {
 		if (options.containsKeyAndNotNull("onsuccess")) {
 			onGrabCallback = (KrollFunction) options.get("onsuccess");
 		}
 		if (options.containsKeyAndNotNull("onerror")) {
 			onErrorCallback = (KrollFunction) options.get("onerror");
 		}
+	}
 
+	@Override
+	public void handleCreationDict(KrollDict options) {
+		super.handleCreationDict(options);
+		importOptions(options);
 	}
 
 	@Kroll.method
@@ -64,7 +67,8 @@ public class ButtonManagerProxy extends KrollProxy {
 	}
 
 	@Kroll.method
-	public void initiateGrabButton() {
+	public void initiateGrabButton(KrollDict options) {
+		importOptions(options);
 		/*
 		 * We will now use the manager that can be used to grab a button from
 		 * the Flic app. The Flic app will be opened up, and the user will be
