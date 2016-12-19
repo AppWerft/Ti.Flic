@@ -45,7 +45,7 @@ public class ButtonManagerProxy extends KrollProxy {
 		if (options.containsKeyAndNotNull("onerror")) {
 			onErrorCallback = (KrollFunction) options.get("onerror");
 		}
-		initiateGrabButton();
+
 	}
 
 	@Kroll.method
@@ -63,7 +63,8 @@ public class ButtonManagerProxy extends KrollProxy {
 		return result;
 	}
 
-	private void initiateGrabButton() {
+	@Kroll.method
+	public void initiateGrabButton() {
 		/*
 		 * We will now use the manager that can be used to grab a button from
 		 * the Flic app. The Flic app will be opened up, and the user will be
