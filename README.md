@@ -48,11 +48,11 @@ Flic.BUTTON_DISCONNECTED;
 
 ```javascript
 var Flic = require("ti.flic");
-var FlicManager = Flic.createFlicMananger({
+var FlicManager = Flic.createFlicMananger();
+FlicManager.initiateGrabButton({
 	onsuccess : handleFlicGrabEvent, // getting UUID + buttonName, ...
 	onerror : handleWarningAboutFlicApp
 });
-FlicManager.initiateGrabButton();
 
 //Button events (even app is not running	)
 Ti.App.addEventListener("flicbutton",handleFlicButtonEvent); // getting UUID, buttonName, up/down
