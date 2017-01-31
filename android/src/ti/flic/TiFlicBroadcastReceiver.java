@@ -40,5 +40,7 @@ public class TiFlicBroadcastReceiver extends FlicBroadcastReceiver {
 		KrollDict event = new KrollDict();
 		event.put("removed", true);
 		TiApplication.getInstance().fireAppEvent("flicbutton", event);
+		FlicModule.fireEvent("flicbutton", event);
+
 	}
 }

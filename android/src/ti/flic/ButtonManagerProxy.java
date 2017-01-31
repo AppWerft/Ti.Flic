@@ -27,7 +27,6 @@ public class ButtonManagerProxy extends KrollProxy {
 	Context ctx = TiApplication.getInstance().getApplicationContext();
 	KrollFunction onErrorCallback;
 	KrollFunction onGrabCallback;
-
 	FlicManager flicManager;
 
 	// Constructor
@@ -67,7 +66,7 @@ public class ButtonManagerProxy extends KrollProxy {
 	}
 
 	@Kroll.method
-	public void initiateGrabButton(KrollDict options) {
+	public void grabFlicFromFlicApp(KrollDict options) {
 		importOptions(options);
 		/*
 		 * We will now use the manager that can be used to grab a button from
@@ -116,7 +115,6 @@ public class ButtonManagerProxy extends KrollProxy {
 									fireEvent("error", event);
 							}
 						});
-
 			}
 
 			@Override
