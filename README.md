@@ -5,6 +5,8 @@
 
 Ti.Flic is an open-source project to support the Flic Android-SDK in Appcelerator's Titanium Mobile. The IOS-version from Hansemann you can find [here](https://github.com/hansemannn/ti.flic).
 
+Unfortunately is a 100% parity of signature not possible. It is because different architecture of both native SDKs.   
+
 This module is highly work in progress and should not be used in any productional environment!
  Hint: send me a button and then I can test and complete the module. ;-)
 
@@ -42,6 +44,13 @@ var Flic = require("ti.flic");
 Flic.BUTTON_CONNECTION_COMPLETED;
 Flic.BUTTON_CONNECTION_STARTED;
 Flic.BUTTON_DISCONNECTED;
+Flic.TRIGGER_BEHAVIOR_ALL
+Flic.TRIGGER_BEHAVIOR_CLICK_OR_DOUBLE_CLICK
+Flic.TRIGGER_BEHAVIOR_CLICK_OR_DOUBLE_CLICK_OR_HOLD
+Flic.TRIGGER_BEHAVIOR_CLICK_OR_HOLD
+Flic.TRIGGER_BEHAVIOR_NONE
+Flic.TRIGGER_BEHAVIOR_REMOVED
+Flic.TRIGGER_BEHAVIOR_UP_OR_DOWN
 ```
 
 ##Usage:
