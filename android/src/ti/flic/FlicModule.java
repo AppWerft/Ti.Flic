@@ -49,7 +49,7 @@ public class FlicModule extends KrollModule {
 	static final int TRIGGER_BEHAVIOR_REMOVED = FlicBroadcastReceiverFlags.REMOVED;
 	static final int TRIGGER_BEHAVIOR_UP_OR_DOWN = FlicBroadcastReceiverFlags.UP_OR_DOWN;
 
-	private static final String LCAT = "TiFlic";
+	public static final String LCAT = "TiFlic";
 	Context ctx = TiApplication.getInstance().getApplicationContext();
 	KrollFunction onErrorCallback;
 	KrollFunction onGrabCallback;

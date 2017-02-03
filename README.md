@@ -7,8 +7,6 @@ Ti.Flic is an open-source project to support the Flic Android-SDK in Appcelerato
 
 Unfortunately is a 100% parity of signature not possible. It is because different architecture of both native SDKs.   
 
-This module is highly work in progress and should not be used in any productional environment!
- Hint: send me a button and then I can test and complete the module. ;-)
 
 The first thing we need to do is to make sure you have the Flic app installed. 
 Why do I need the Flic app? The fliclib works with the Flic app so that you don't have to worry about handling the Flics, scanning the Flics, or monitoring the communication with them. All of that is taken care of by the Flic app.
@@ -30,7 +28,7 @@ In your tiapp.xml (or manifest) you have to put:
 
 ```xml
 <receiver
-  android:name=".TiBroadcastReceiver"
+  android:name=".TiFlicBroadcastReceiver"
   android:enabled="true"
   android:exported="true" >
     <intent-filter>
