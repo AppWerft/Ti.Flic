@@ -3,6 +3,7 @@ package ti.flic;
 // http://www.nada.kth.se/~ameier/flic/guidelines/android/
 
 import org.appcelerator.kroll.KrollDict;
+import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.common.Log;
 import org.appcelerator.titanium.TiApplication;
 
@@ -11,12 +12,19 @@ import io.flic.lib.FlicButton;
 import android.content.Context;
 
 public class TiFlicBroadcastReceiver extends FlicBroadcastReceiver {
-	private TiApplication instance;
 	private String LCAT = FlicModule.LCAT;
+	KrollModule module;
 
 	public TiFlicBroadcastReceiver() {
-		Log.d(LCAT, "create TiFlicBroadcastReceiver");
-		instance = TiApplication.getInstance();
+		// instance = TiApplication.getInstance();
+	}
+
+	private void sendJS(String action, KrollDict evt) {
+		TiApplication app = TiApplication.getInstance();
+		evt.put("action", action);
+		app.fireAppEvent("flic", evt);
+		app.fireAppEvent("flic_" + action, evt);
+		Log.d(LCAT, evt.toString());
 	}
 
 	@Override
@@ -26,21 +34,25 @@ public class TiFlicBroadcastReceiver extends FlicBroadcastReceiver {
 	}
 
 	@Override
-	public void onButtonUpOrDown(Context context, FlicButton button,
-			boolean wasQueued, int timeDiff, boolean isUp, boolean isDown) {
-		Log.d(LCAT, "onButtonUpOrDown");
+	public void onButtonSingleOrDoubleClickOrHold(Context ctx,
+			FlicButton button, boolean wasQueued, int timeDiff,
+			boolean isSingleClick, boolean isDoubleClick, boolean isHold) {
 		KrollDict event = new KrollDict();
 		event.put("timeDiff", timeDiff);
 		event.put("UUID", button.getButtonId());
-		event.put("buttonName", button.getName());
-
-		if (isUp) {
-			event.put("action", "down");
-		} else {
-			event.put("action", "up");
+		event.put("name", button.getName());
+		event.put("queued", wasQueued);
+		String action = "";
+		if (isHold) {
+			action = "longpress";
 		}
-
-		instance.fireAppEvent("flic", event);
+		if (isSingleClick) {
+			action = "click";
+		}
+		if (isDoubleClick) {
+			action = "dblclick";
+		}
+		sendJS(action, event);
 	}
 
 	@Override
@@ -48,7 +60,6 @@ public class TiFlicBroadcastReceiver extends FlicBroadcastReceiver {
 		Log.d(LCAT, "onButtonRemoved");
 		KrollDict event = new KrollDict();
 		event.put("removed", true);
-		TiApplication.getInstance().fireAppEvent("flicbutton", event);
-		// FlicModule.fireEvent("flicbutton", event);
+		sendJS("removed", event);
 	}
 }

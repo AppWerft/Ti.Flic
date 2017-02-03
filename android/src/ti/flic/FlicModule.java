@@ -57,11 +57,20 @@ public class FlicModule extends KrollModule {
 
 	public FlicModule() {
 		super();
+		Log.d(LCAT, "Constructor!!!");
+	}
+
+	public void sendJS(KrollDict kd) {
+		if (hasListeners("flic")) {
+			fireEvent("flic", kd);
+		}
 	}
 
 	@Kroll.onAppCreate
 	public static void onAppCreate(TiApplication app) {
 		Config.setFlicCredentials();
+		Log.d(LCAT, "onAppCreate");
+
 	}
 
 	@Kroll.method
@@ -89,7 +98,7 @@ public class FlicModule extends KrollModule {
 												resultCode, data);
 								KrollDict event = new KrollDict();
 								if (button != null) {
-									button.registerListenForBroadcast(FlicBroadcastReceiverFlags.UP_OR_DOWN
+									button.registerListenForBroadcast(FlicBroadcastReceiverFlags.ALL
 											| FlicBroadcastReceiverFlags.REMOVED);
 									event.put("message", "Grabbed a button");
 									event.put("grabbed", true);
