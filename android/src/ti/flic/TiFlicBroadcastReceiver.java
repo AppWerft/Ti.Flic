@@ -1,5 +1,7 @@
 package ti.flic;
 
+// http://www.nada.kth.se/~ameier/flic/guidelines/android/
+
 import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.titanium.TiApplication;
 
@@ -32,6 +34,7 @@ public class TiFlicBroadcastReceiver extends FlicBroadcastReceiver {
 		} else {
 			event.put("action", "up");
 		}
+
 		instance.fireAppEvent("flic", event);
 	}
 
@@ -40,7 +43,6 @@ public class TiFlicBroadcastReceiver extends FlicBroadcastReceiver {
 		KrollDict event = new KrollDict();
 		event.put("removed", true);
 		TiApplication.getInstance().fireAppEvent("flicbutton", event);
-		FlicModule.fireEvent("flicbutton", event);
-
+		// FlicModule.fireEvent("flicbutton", event);
 	}
 }
