@@ -195,9 +195,9 @@ public class FlicModule extends KrollModule {
 	}
 
 	@Kroll.method
-	public void updateButtonTriggerBehavior(String uuid, int behaviour) {
+	public void updateButtonTriggerBehavior(String uuid, int behavior) {
 		FlicButton flicButton = flicManager.getButtonByDeviceId(uuid);
-		flicButton.setFlicButtonCallbackFlags(behaviour);
+		flicButton.setFlicButtonCallbackFlags(behavior);
 	}
 
 	@Kroll.method
