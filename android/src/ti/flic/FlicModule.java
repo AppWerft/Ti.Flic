@@ -30,6 +30,51 @@ import android.content.Intent;
 
 @Kroll.module(name = "Flic", id = "ti.flic")
 public class FlicModule extends KrollModule {
+	private final class OnInitializedHandler implements
+			FlicManagerInitializedCallback {
+		private final Intent data;
+		private final int requestCode;
+		private final int resultCode;
+
+		private OnInitializedHandler(Intent data, int requestCode,
+				int resultCode) {
+			this.data = data;
+			this.requestCode = requestCode;
+			this.resultCode = resultCode;
+		}
+
+		@Override
+		public void onInitialized(FlicManager _flicManager) {
+			Log.d(LCAT, "onInitialized");
+			flicManager = _flicManager;
+			FlicButton button = flicManager.completeGrabButton(requestCode,
+					resultCode, data);
+			KrollDict event = new KrollDict();
+			if (button != null) {
+				button.registerListenForBroadcast(FlicBroadcastReceiverFlags.ALL
+						| FlicBroadcastReceiverFlags.REMOVED);
+				event.put("message", "Grabbed a button");
+				event.put("grabbed", true);
+				event.put("UUID", button.getButtonId());
+				event.put("status", button.getConnectionStatus());
+				event.put("buttonName", button.getName());
+				Log.d(LCAT, event.toString());
+				if (hasListeners("grabbed")) {
+					fireEvent("grabbed", event);
+				}
+				if (onGrabCallback != null) {
+					onGrabCallback.call(getKrollObject(), event);
+				}
+
+			} else {
+				event.put("message", "Did not grab any button");
+				event.put("grabbed", false);
+			}
+			if (hasListeners("error"))
+				fireEvent("error", event);
+		}
+	}
+
 	@Kroll.constant
 	public static final int BUTTON_CONNECTION_COMPLETED = FlicButton.BUTTON_CONNECTION_COMPLETED;
 	@Kroll.constant
@@ -58,6 +103,17 @@ public class FlicModule extends KrollModule {
 	public FlicModule() {
 		super();
 		Log.d(LCAT, "Constructor!!!");
+		try {
+			FlicManager.getInstance(ctx, new FlicManagerInitializedCallback() {
+				@Override
+				public void onInitialized(FlicManager manager) {
+					flicManager = manager;
+					if (fireEvent("flic", "ready"))
+						;
+				}
+			});
+		} catch (FlicAppNotInstalledException err) {
+		}
 	}
 
 	public void sendJS(KrollDict kd) {
@@ -87,43 +143,8 @@ public class FlicModule extends KrollModule {
 			@Override
 			public void onResult(Activity activity, final int requestCode,
 					final int resultCode, final Intent data) {
-				FlicManager.getInstance(ctx,
-						new FlicManagerInitializedCallback() {
-							@Override
-							public void onInitialized(FlicManager _flicManager) {
-								Log.d(LCAT, "onInitialized");
-								flicManager = _flicManager;
-								FlicButton button = flicManager
-										.completeGrabButton(requestCode,
-												resultCode, data);
-								KrollDict event = new KrollDict();
-								if (button != null) {
-									button.registerListenForBroadcast(FlicBroadcastReceiverFlags.ALL
-											| FlicBroadcastReceiverFlags.REMOVED);
-									event.put("message", "Grabbed a button");
-									event.put("grabbed", true);
-									event.put("UUID", button.getButtonId());
-									event.put("status",
-											button.getConnectionStatus());
-									event.put("buttonName", button.getName());
-									Log.d(LCAT, event.toString());
-									if (hasListeners("grabbed")) {
-										fireEvent("grabbed", event);
-									}
-									if (onGrabCallback != null) {
-										onGrabCallback.call(getKrollObject(),
-												event);
-									}
-
-								} else {
-									event.put("message",
-											"Did not grab any button");
-									event.put("grabbed", false);
-								}
-								if (hasListeners("error"))
-									fireEvent("error", event);
-							}
-						});
+				FlicManager.getInstance(ctx, new OnInitializedHandler(data,
+						requestCode, resultCode));
 			}
 
 			@Override
