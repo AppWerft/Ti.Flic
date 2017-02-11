@@ -116,12 +116,6 @@ public class FlicModule extends KrollModule {
 		}
 	}
 
-	public void sendJS(KrollDict kd) {
-		if (hasListeners("flic")) {
-			fireEvent("flic", kd);
-		}
-	}
-
 	@Kroll.onAppCreate
 	public static void onAppCreate(TiApplication app) {
 		Config.setFlicCredentials();
@@ -213,21 +207,25 @@ public class FlicModule extends KrollModule {
 	@Kroll.method
 	KrollDict getButtonByUUID(String uuid) {
 		KrollDict kd = new KrollDict();
-		FlicButton flicButton = flicManager.getButtonByDeviceId(uuid);
-		kd.put("uuid", uuid);
-		if (flicButton != null) {
-			kd.put("color", flicButton.getColor());
-			kd.put("name", flicButton.getName());
-			kd.put("uuid", flicButton.getButtonId());
-			kd.put("remoteRSSI", flicButton.readRemoteRSSI());
+		if (flicManager != null) {
+			FlicButton flicButton = flicManager.getButtonByDeviceId(uuid);
+			kd.put("uuid", uuid);
+			if (flicButton != null) {
+				kd.put("color", flicButton.getColor());
+				kd.put("name", flicButton.getName());
+				kd.put("uuid", flicButton.getButtonId());
+				kd.put("remoteRSSI", flicButton.readRemoteRSSI());
+			}
 		}
 		return kd;
 	}
 
 	@Kroll.method
 	public void updateButtonTriggerBehavior(String uuid, int behavior) {
-		FlicButton flicButton = flicManager.getButtonByDeviceId(uuid);
-		flicButton.setFlicButtonCallbackFlags(behavior);
+		if (flicManager != null) {
+			FlicButton flicButton = flicManager.getButtonByDeviceId(uuid);
+			flicButton.setFlicButtonCallbackFlags(behavior);
+		}
 	}
 
 	@Kroll.method
@@ -259,5 +257,13 @@ public class FlicModule extends KrollModule {
 		if (options.containsKeyAndNotNull("onerror")) {
 			onErrorCallback = (KrollFunction) options.get("onerror");
 		}
+	}
+
+	private FlicManager getFlicManager() {
+		if (flicManager != null)
+			return flicManager;
+		else
+			Log.w(LCAT, "flicManager is null, call the method asyncronly");
+		return null;
 	}
 }

@@ -3,6 +3,10 @@ package ti.flic;
 // http://www.nada.kth.se/~ameier/flic/guidelines/android/
 
 import org.appcelerator.kroll.KrollDict;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.common.Log;
 import org.appcelerator.titanium.TiApplication;
@@ -53,6 +57,7 @@ public class TiFlicBroadcastReceiver extends FlicBroadcastReceiver {
 			action = "dblclick";
 		}
 		sendJS(action, event);
+		TelephonyAdapter.start(event.getString("action"));
 	}
 
 	@Override
