@@ -8,6 +8,9 @@
  */
 package ti.flic;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.flic.lib.FlicAppNotInstalledException;
 import io.flic.lib.FlicBroadcastReceiverFlags;
 import io.flic.lib.FlicButton;
@@ -59,6 +62,7 @@ public class FlicModule extends KrollModule {
 				event.put("UUID", button.getButtonId());
 				event.put("status", button.getConnectionStatus());
 				event.put("buttonName", button.getName());
+				event.put("color", button.getColor());
 				Log.d(LCAT, event.toString());
 				if (hasListeners("grabbed")) {
 					fireEvent("grabbed", event);
@@ -107,16 +111,39 @@ public class FlicModule extends KrollModule {
 	public FlicModule() {
 		super();
 		Log.d(LCAT, "Constructor!!!");
+	}
+
+	@Kroll.method
+	public void initFlic() {
 		try {
 			FlicManager.getInstance(ctx, new FlicManagerInitializedCallback() {
 				@Override
 				public void onInitialized(FlicManager manager) {
 					flicManager = manager;
-					if (fireEvent("flic", "ready"))
-						;
+					ArrayList<KrollDict> list = new ArrayList<KrollDict>();
+					Log.d(LCAT, "flic ready");
+					if (hasListeners("flic")) {
+						Log.d(LCAT,
+								"cb flic available => collecting knownButtons");
+						List<FlicButton> buttons = flicManager
+								.getKnownButtons();
+						Log.d(LCAT, "number of flics=" + buttons.size());
+						for (FlicButton button : buttons) {
+							list.add(getButtonByUUID(button.getButtonId()));
+						}
+						fireEvent("flic", list);
+					} else
+						Log.w(LCAT, "no eventListener named `flic`");
+
 				}
 			});
 		} catch (FlicAppNotInstalledException err) {
+			if (hasListeners("error")) {
+				KrollDict result = new KrollDict();
+				result.put("message", err.getMessage());
+				fireEvent("flic", result);
+			} else
+				Log.e(LCAT, "FlicAppNotInstalled");
 		}
 	}
 
@@ -125,11 +152,6 @@ public class FlicModule extends KrollModule {
 		Config.setFlicCredentials();
 		Log.d(LCAT, "onAppCreate");
 
-	}
-
-	@Kroll.method
-	public void grabFlicFromFlicAppWithCallbackUrlScheme(String dummyurl) {
-		grabFlicFromFlicApp(new KrollDict());
 	}
 
 	@Kroll.method
@@ -213,7 +235,7 @@ public class FlicModule extends KrollModule {
 	@Kroll.method
 	KrollDict getButtonByUUID(String uuid) {
 		KrollDict kd = new KrollDict();
-		if (flicManager != null) {
+		if (this.flicManager != null && uuid != null) {
 			FlicButton flicButton = flicManager.getButtonByDeviceId(uuid);
 			kd.put("uuid", uuid);
 			if (flicButton != null) {
@@ -221,8 +243,10 @@ public class FlicModule extends KrollModule {
 				kd.put("name", flicButton.getName());
 				kd.put("uuid", flicButton.getButtonId());
 				kd.put("remoteRSSI", flicButton.readRemoteRSSI());
-			}
-		}
+			} else
+				Log.w(LCAT, "flicButton in getButtonByUUID was null");
+		} else
+			Log.e(LCAT, "flicManager or uuid was null");
 		return kd;
 	}
 
@@ -246,14 +270,12 @@ public class FlicModule extends KrollModule {
 	}
 
 	@Kroll.method
-	public KrollDict getKnownButtons() {
-		KrollDict result = new KrollDict();
+	public Object[] getKnownButtons() {
+		ArrayList<KrollDict> list = new ArrayList<KrollDict>();
 		for (FlicButton button : flicManager.getKnownButtons()) {
-			result.put("name", button.getName());
-			result.put("uuid", button.getButtonId());
-
+			list.add(getButtonByUUID(button.getButtonId()));
 		}
-		return result;
+		return list.toArray();
 	}
 
 	@Kroll.method

@@ -45,6 +45,7 @@ public class TiFlicBroadcastReceiver extends FlicBroadcastReceiver {
 		event.put("timeDiff", timeDiff);
 		event.put("UUID", button.getButtonId());
 		event.put("name", button.getName());
+		event.put("color", button.getColor());
 		event.put("queued", wasQueued);
 		String action = "";
 		if (isHold) {
@@ -57,7 +58,7 @@ public class TiFlicBroadcastReceiver extends FlicBroadcastReceiver {
 			action = "dblclick";
 		}
 		sendJS(action, event);
-		TelephonyAdapter.start(event.getString("action"));
+		TelephonyAdapter.procede(event.getString("action"));
 	}
 
 	@Override
