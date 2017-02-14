@@ -50,6 +50,10 @@ Flic.TRIGGER_BEHAVIOR_CLICK_OR_HOLD
 Flic.TRIGGER_BEHAVIOR_NONE
 Flic.TRIGGER_BEHAVIOR_REMOVED
 Flic.TRIGGER_BEHAVIOR_UP_OR_DOWN
+Flic.BLUETOOTH_UNAVAILABLE
+Flic.BLUETOOTH_INACTIVE
+Flic.BLUETOOTH_ACTIVE
+
 ```
 
 ##Usage:
@@ -69,6 +73,9 @@ Flic.getKnownButtons(); // returns list of name + uuid
 Flic.isEnabled();
 Flic.getButtonByUUID(uuid);
 Flic.updateButtonTriggerBehavior(behavior);
+Flic.getBluetoothStatus();
+Flic.isBluetoothEnabled();
+
 ```
 `behavior` can be
 ```

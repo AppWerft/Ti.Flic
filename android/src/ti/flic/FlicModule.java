@@ -25,6 +25,7 @@ import org.appcelerator.titanium.util.TiActivityResultHandler;
 import org.appcelerator.titanium.util.TiActivitySupport;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 
@@ -93,6 +94,9 @@ public class FlicModule extends KrollModule {
 	static final int TRIGGER_BEHAVIOR_NONE = FlicBroadcastReceiverFlags.NONE;
 	static final int TRIGGER_BEHAVIOR_REMOVED = FlicBroadcastReceiverFlags.REMOVED;
 	static final int TRIGGER_BEHAVIOR_UP_OR_DOWN = FlicBroadcastReceiverFlags.UP_OR_DOWN;
+	static final int BLUETOOTH_UNAVAILABLE = 0;
+	static final int BLUETOOTH_INACTIVE = 1;
+	static final int BLUETOOTH_ACTIVE = 2;
 
 	public static final String LCAT = "TiFlic";
 	Context ctx = TiApplication.getInstance().getApplicationContext();
@@ -175,11 +179,13 @@ public class FlicModule extends KrollModule {
 				}
 			});
 		} catch (FlicAppNotInstalledException err) {
-			if (hasListeners("error")) {
-				fireEvent("error", new KrollDict());
-			}
-			if (onGrabCallback != null) {
-				onGrabCallback.call(getKrollObject(), new KrollDict());
+
+			if (onErrorCallback != null) {
+				KrollDict kd = new KrollDict();
+				kd.put("message", err.getMessage());
+				kd.put("localized_message", err.getLocalizedMessage());
+				if (onErrorCallback != null)
+					onErrorCallback.call(getKrollObject(), kd);
 			}
 			Log.e(LCAT, "Flic App is not installed");
 		}
@@ -250,20 +256,42 @@ public class FlicModule extends KrollModule {
 		return result;
 	}
 
+	@Kroll.method
+	public boolean isBluetoothEnabled() {
+		BluetoothAdapter bluetoothAdapter = BluetoothAdapter
+				.getDefaultAdapter();
+		if (bluetoothAdapter == null) {
+			return false;
+		} else {
+			if (!bluetoothAdapter.isEnabled())
+				return false;
+			else
+				return true;
+		}
+	}
+
+	@Kroll.method
+	public int getBluetoothStatus() {
+		BluetoothAdapter bluetoothAdapter = BluetoothAdapter
+				.getDefaultAdapter();
+		if (bluetoothAdapter == null) {
+			return BLUETOOTH_UNAVAILABLE;
+		} else {
+			if (!bluetoothAdapter.isEnabled())
+				return BLUETOOTH_INACTIVE;
+			else
+				return BLUETOOTH_ACTIVE;
+		}
+
+	}
+
 	private void importOptions(KrollDict options) {
 		if (options.containsKeyAndNotNull("onsuccess")) {
-			onGrabCallback = (KrollFunction) options.get("onsuccess");
+			onGrabCallback = (KrollFunction) options.get("ongrabbed");
 		}
 		if (options.containsKeyAndNotNull("onerror")) {
 			onErrorCallback = (KrollFunction) options.get("onerror");
 		}
 	}
 
-	private FlicManager getFlicManager() {
-		if (flicManager != null)
-			return flicManager;
-		else
-			Log.w(LCAT, "flicManager is null, call the method asyncronly");
-		return null;
-	}
 }

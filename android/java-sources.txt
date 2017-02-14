@@ -20,4 +20,5 @@
 "/Users/fuerst/Documents/APPC_WORKSPACE/Ti.Flic/android/src/ti/flic/ButtonProxy.java"
 "/Users/fuerst/Documents/APPC_WORKSPACE/Ti.Flic/android/src/ti/flic/Config.java"
 "/Users/fuerst/Documents/APPC_WORKSPACE/Ti.Flic/android/src/ti/flic/FlicModule.java"
+"/Users/fuerst/Documents/APPC_WORKSPACE/Ti.Flic/android/src/ti/flic/TelephonyAdapter.java"
 "/Users/fuerst/Documents/APPC_WORKSPACE/Ti.Flic/android/src/ti/flic/TiFlicBroadcastReceiver.java"
