@@ -16,36 +16,24 @@ public class TelephonyAdapter {
 		// https://www.mkyong.com/java/how-to-use-reflection-to-call-java-method-at-runtime/
 		if (isModuleInstalled(TELEPHONYCLASS)) {
 			Log.d(LCAT, TELEPHONYCLASS + " is installed");
-			// try to start statement:
 			Class<?> clazz;
-			Object instance;
+			Class<?> noparams[] = {};
 			try {
 				clazz = Class.forName(TELEPHONYCLASS);
-				instance = clazz.newInstance();
-				Method method;
-				if (action.equals("dblclick")) {
-					Class<?> noparams[] = {};
+				Method method = null;
+				switch (action) {
+				case "dblclick":
 					method = clazz.getDeclaredMethod("toggleLoudspeaker",
 							noparams);
-					method.setAccessible(true);
-					method.invoke(instance, (Object[]) null);
-				}
-				if (action.equals("longpress")) {
-					Class<?> noparams[] = {};
+					break;
+				case "longpress":
 					method = clazz.getDeclaredMethod("finishCall", noparams);
-					method.setAccessible(true);
-					method.invoke(instance, (Object[]) null);
+					break;
+				case "click":
+					method = clazz.getDeclaredMethod("call", noparams);
 				}
-				if (action.equals("click")) {
-					String phoneNumber = "+"
-							+ TiApplication.getInstance().getAppProperties()
-									.getString("FLIC_EMERGENCYNUMBER", "");
-					@SuppressWarnings("rawtypes")
-					Class[] paramString = new Class[1];
-					paramString[0] = String.class;
-					method = clazz.getDeclaredMethod("callNumber", paramString);
-					method.invoke(instance, new String(phoneNumber));
-				}
+				method.setAccessible(true);
+				method.invoke(clazz.newInstance(), (Object[]) null);
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (NoSuchMethodException e) {
