@@ -22,19 +22,19 @@ public class TelephonyAdapter {
 			try {
 				clazz = Class.forName(TELEPHONYCLASS);
 				instance = clazz.newInstance();
-
-				Class<?> noparams[] = {};
 				Method method;
 				if (action.equals("dblclick")) {
+					Class<?> noparams[] = {};
 					method = clazz.getDeclaredMethod("toggleLoudspeaker",
 							noparams);
 					method.setAccessible(true);
-					method.invoke(instance, null);
+					method.invoke(instance, (Object[]) null);
 				}
 				if (action.equals("longpress")) {
+					Class<?> noparams[] = {};
 					method = clazz.getDeclaredMethod("finishCall", noparams);
 					method.setAccessible(true);
-					method.invoke(instance, null);
+					method.invoke(instance, (Object[]) null);
 				}
 				if (action.equals("click")) {
 					String phoneNumber = "+"
