@@ -107,9 +107,11 @@ public class FlicModule extends KrollModule {
 	KrollFunction onErrorCallback;
 	KrollFunction onGrabCallback;
 	FlicManager flicManager;
+	public static String configUri;
 
 	public FlicModule() {
 		super();
+		configUri = resolveUrl(null, "flic-telephony-gateway.json");
 		Log.d(LCAT, "Constructor!!!");
 	}
 
